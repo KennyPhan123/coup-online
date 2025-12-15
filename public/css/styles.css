@@ -1,0 +1,848 @@
+:root {
+    --bg: #1a1a2e;
+    --bg-light: #16213e;
+    --bg-lighter: #1f2a47;
+    --surface: #1f2a47;
+    --surface-light: #2a3655;
+    --text: #e8e8e8;
+    --text-light: #a0a0a0;
+    --text-muted: #6a6a7a;
+    --gold: #e8d5b7;
+    --gold-dark: #c9a96e;
+    --shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+
+    /* Pastel Role Colors */
+    --duke: #c786bf;
+    --assassin: #2c2c2c;
+    --captain: #7ec2e2;
+    --ambassador: #c0ca58;
+    --contessa: #de5246;
+
+    /* Darker versions for backgrounds */
+    --duke-bg: #4a2a46;
+    --assassin-bg: #1a1a1a;
+    --captain-bg: #2a4a5a;
+    --ambassador-bg: #3a4a2a;
+    --contessa-bg: #5a2a2a;
+
+    /* Neutral */
+    --neutral: #4a4a5a;
+    --neutral-light: #6a6a7a;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    overscroll-behavior: none;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: "Nunito", sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    overflow-y: auto;
+    -webkit-font-smoothing: antialiased;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Common UI */
+.screen {
+    display: none;
+    flex-direction: column;
+    padding: 20px;
+    max-width: 600px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.active {
+    display: flex;
+}
+
+/* ========== ENTRANCE SCREENS THEME ========== */
+.entrance-screen {
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(
+        135deg,
+        #1a1a2e 0%,
+        #16213e 50%,
+        #0f3460 100%
+    );
+    max-width: none;
+    padding: 40px 20px;
+}
+
+.entrance-screen h1 {
+    font-family: "Playfair Display", serif;
+    font-size: 4.5em;
+    margin-bottom: 10px;
+    text-align: center;
+    color: var(--gold);
+    letter-spacing: 8px;
+    font-weight: 900;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.entrance-screen h2 {
+    font-family: "Nunito", sans-serif;
+    color: #a0a0a0;
+    font-size: 1em;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 40px;
+}
+
+.entrance-screen .subtitle {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 30px;
+}
+
+.entrance-screen input {
+    padding: 18px 20px;
+    border-radius: 8px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    font-size: 1.1em;
+    margin-bottom: 15px;
+    outline: none;
+    transition: 0.3s;
+    font-family: inherit;
+    text-align: center;
+    width: 100%;
+    max-width: 320px;
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+.entrance-screen input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.entrance-screen input:focus {
+    border-color: var(--gold);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.entrance-screen .btn {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: #fff;
+    font-size: 0.95em;
+    padding: 16px 20px;
+    letter-spacing: 1px;
+    transition: all 0.3s;
+}
+
+.entrance-screen .btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+.entrance-screen .btn-primary {
+    background: linear-gradient(
+        135deg,
+        var(--gold) 0%,
+        var(--gold-dark) 100%
+    );
+    border: none;
+    color: #1a1a2e;
+    font-weight: 800;
+}
+
+.entrance-screen .btn-primary:hover {
+    background: linear-gradient(135deg, #f0e0c8 0%, #d4b87a 100%);
+}
+
+.entrance-screen .btn-back {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.entrance-screen .btn-back:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #fff;
+}
+
+.entrance-container {
+    width: 100%;
+    max-width: 320px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.entrance-screen .room-code-container {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+.entrance-screen .room-code {
+    font-family: "Playfair Display", serif;
+    font-size: 3em;
+    color: var(--gold);
+    letter-spacing: 8px;
+    font-weight: 700;
+}
+
+.entrance-screen .copy-btn {
+    background: transparent;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: var(--text-light);
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+    font-size: 1.2em;
+}
+
+.entrance-screen .copy-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+}
+
+.entrance-screen .copy-btn.copied {
+    border-color: var(--ambassador);
+    color: var(--ambassador);
+}
+
+.entrance-screen .lobby-player-list {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1em;
+    margin: 20px 0 30px 0;
+}
+
+.entrance-screen .lobby-player-list div {
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* ========== GAME SCREEN STYLES ========== */
+#game-screen {
+    justify-content: flex-start;
+    align-items: center;
+    padding: 15px;
+    padding-bottom: 20px;
+    background: linear-gradient(180deg, #1a1a2e 0%, #16213e 100%);
+    min-height: 100vh;
+    max-width: none;
+}
+
+#game-screen .game-container {
+    max-width: 600px;
+    width: 100%;
+}
+
+/* BUTTON STYLES */
+.btn {
+    padding: 10px 6px;
+    border-radius: 8px;
+    border: none;
+    background: var(--neutral);
+    color: white;
+    font-size: 0.8em;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: none;
+    transition:
+        transform 0.1s,
+        opacity 0.2s;
+    font-family: inherit;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    white-space: normal;
+    line-height: 1.1;
+
+    width: calc(33.33% - 6px);
+    flex-grow: 0;
+    flex-shrink: 0;
+    min-height: 40px;
+}
+
+.btn:active {
+    transform: translateY(2px);
+}
+
+.btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.w-100 {
+    width: 100% !important;
+    margin: 5px 0;
+    max-width: 320px;
+}
+
+/* Role Actions - ONLY these have colors */
+.btn-duke {
+    background: var(--duke);
+    color: #1a1a2e;
+}
+
+.btn-assassin {
+    background: var(--assassin);
+    color: #fff;
+}
+
+.btn-captain {
+    background: var(--captain);
+    color: #1a1a2e;
+}
+
+.btn-ambassador {
+    background: var(--ambassador);
+    color: #1a1a2e;
+}
+
+.btn-contessa {
+    background: var(--contessa);
+    color: #fff;
+}
+
+.btn-neutral {
+    background: var(--neutral);
+    color: #fff;
+}
+
+/* CARDS */
+.card {
+    width: 75px;
+    height: 105px;
+    background: var(--surface);
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 4px;
+    font-weight: 800;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    user-select: none;
+    position: relative;
+    overflow: hidden;
+    border: 2px solid transparent;
+    padding: 8px 4px;
+}
+
+.card .card-logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    margin-bottom: 6px;
+    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+    flex-shrink: 0;
+}
+
+.card .card-name {
+    font-size: 0.65em;
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    color: var(--text);
+    font-weight: 700;
+    line-height: 1;
+    max-width: 100%;
+    padding: 0 2px;
+}
+
+.card[data-role="Duke"] {
+    background: var(--duke-bg);
+    border-color: var(--duke);
+}
+
+.card[data-role="Duke"] .card-name {
+    color: var(--duke);
+}
+
+.card[data-role="Assassin"] {
+    background: var(--assassin-bg);
+    border-color: var(--assassin);
+}
+
+.card[data-role="Assassin"] .card-name {
+    color: #888;
+}
+
+.card[data-role="Captain"] {
+    background: var(--captain-bg);
+    border-color: var(--captain);
+}
+
+.card[data-role="Captain"] .card-name {
+    color: var(--captain);
+}
+
+.card[data-role="Ambassador"] {
+    background: var(--ambassador-bg);
+    border-color: var(--ambassador);
+}
+
+.card[data-role="Ambassador"] .card-name {
+    color: var(--ambassador);
+    font-size: 0.55em;
+    letter-spacing: 0;
+}
+
+.card[data-role="Contessa"] {
+    background: var(--contessa-bg);
+    border-color: var(--contessa);
+}
+
+.card[data-role="Contessa"] .card-name {
+    color: var(--contessa);
+}
+
+.card.revealed {
+    background: #2a2a3a;
+    border-color: #3a3a4a;
+    opacity: 0.5;
+}
+
+.card.revealed .card-logo {
+    filter: grayscale(100%) opacity(0.5);
+}
+
+.card.revealed .card-name {
+    color: #5a5a6a;
+}
+
+.card.hidden {
+    background: var(--surface);
+    border-color: var(--neutral);
+}
+
+.card.hidden::before {
+    content: "?";
+    font-size: 2em;
+    color: var(--neutral-light);
+    font-weight: 900;
+}
+
+.card.selectable {
+    transform: translateY(-8px);
+    box-shadow: 0 10px 25px rgba(232, 213, 183, 0.3);
+    border-color: var(--gold);
+}
+
+.card.selected {
+    opacity: 0.6;
+    transform: scale(0.95);
+    border-color: var(--ambassador);
+}
+
+/* Action Notification */
+.action-notification {
+    display: none;
+    width: 100%;
+    padding: 12px 16px;
+    border-radius: 10px;
+    margin-bottom: 12px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.9em;
+    color: white;
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.action-notification.active {
+    display: block;
+}
+
+.action-notification .action-text {
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+/* Only role-related notifications have colors */
+.action-notification.notify-duke {
+    background: var(--duke-bg);
+    border-color: var(--duke);
+    color: var(--duke);
+}
+
+.action-notification.notify-assassin {
+    background: var(--assassin-bg);
+    border-color: var(--assassin);
+    color: #aaa;
+}
+
+.action-notification.notify-captain {
+    background: var(--captain-bg);
+    border-color: var(--captain);
+    color: var(--captain);
+}
+
+.action-notification.notify-ambassador {
+    background: var(--ambassador-bg);
+    border-color: var(--ambassador);
+    color: var(--ambassador);
+}
+
+.action-notification.notify-contessa {
+    background: var(--contessa-bg);
+    border-color: var(--contessa);
+    color: var(--contessa);
+}
+
+.action-notification.notify-neutral {
+    background: var(--surface);
+    border-color: var(--neutral);
+    color: var(--text-light);
+}
+
+.player-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+    width: 100%;
+}
+
+.player {
+    background: var(--surface);
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: 0.3s;
+    border: 2px solid transparent;
+}
+
+.player.turn {
+    border-color: var(--gold);
+    background: var(--surface-light);
+}
+
+.player.eliminated {
+    opacity: 0.4;
+    filter: grayscale(50%);
+}
+
+.player-name {
+    font-weight: 800;
+    margin-bottom: 4px;
+    font-size: 0.9em;
+    color: var(--text);
+}
+
+.player-stats {
+    font-size: 0.75em;
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.logs {
+    height: 110px;
+    min-height: 70px;
+    overflow-y: auto;
+    background: var(--surface);
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 12px;
+    font-size: 0.8em;
+    color: var(--text-light);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    width: 100%;
+}
+
+.logs div {
+    margin-bottom: 5px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+    padding-bottom: 4px;
+}
+
+.my-area {
+    background: var(--surface);
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    width: 100%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.my-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-weight: 800;
+    font-size: 1.1em;
+}
+
+.my-info .coins {
+    color: var(--gold);
+}
+
+.controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 6px;
+    width: 100%;
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 20, 0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 100;
+    padding: 20px;
+}
+
+.modal h3 {
+    color: var(--gold);
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    font-family: "Playfair Display", serif;
+}
+
+/* Cheatsheet Button */
+.cheatsheet-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--surface);
+    border: 2px solid var(--neutral);
+    color: var(--text-light);
+    font-size: 1.2em;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    transition: all 0.3s;
+    box-shadow: var(--shadow);
+}
+
+.cheatsheet-btn:hover {
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: scale(1.1);
+}
+
+/* Cheatsheet Modal */
+.cheatsheet-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 10, 20, 0.95);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    z-index: 200;
+    padding: 15px;
+}
+
+.cheatsheet-modal.active {
+    display: flex;
+}
+
+.cheatsheet-modal .cheatsheet-content {
+    width: 100%;
+    max-width: 900px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cheatsheet-modal .cheatsheet-content img {
+    width: 100%;
+    height: auto;
+    max-height: calc(100vh - 100px);
+    object-fit: contain;
+    display: block;
+}
+
+.cheatsheet-modal .close-btn {
+    margin-top: 15px;
+    padding: 12px 30px;
+    background: transparent;
+    border: 2px solid var(--gold);
+    color: var(--gold);
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 0.9em;
+    transition: all 0.3s;
+}
+
+.cheatsheet-modal .close-btn:hover {
+    background: var(--gold);
+    color: var(--bg);
+}
+
+/* RESPONSIVE */
+@media (min-width: 600px) {
+    .btn {
+        width: calc(25% - 6px);
+        font-size: 0.85em;
+        padding: 12px 8px;
+        min-height: 44px;
+    }
+
+    .entrance-screen h1 {
+        font-size: 5.5em;
+    }
+
+    .card {
+        width: 90px;
+        height: 125px;
+        padding: 10px 6px;
+    }
+
+    .card .card-logo {
+        width: 50px;
+        height: 50px;
+        margin-bottom: 8px;
+    }
+
+    .card .card-name {
+        font-size: 0.7em;
+    }
+
+    .card[data-role="Ambassador"] .card-name {
+        font-size: 0.6em;
+    }
+}
+
+@media (max-width: 600px) {
+    .btn {
+        font-size: 0.7em;
+        padding: 8px 4px;
+        min-height: 36px;
+        width: calc(33.33% - 5px);
+    }
+
+    .card {
+        width: 65px;
+        height: 95px;
+        padding: 6px 3px;
+    }
+
+    .card .card-logo {
+        width: 32px;
+        height: 32px;
+        margin-bottom: 4px;
+    }
+
+    .card .card-name {
+        font-size: 0.55em;
+    }
+
+    .card[data-role="Ambassador"] .card-name {
+        font-size: 0.42em;
+        letter-spacing: -0.3px;
+    }
+
+    .entrance-screen h1 {
+        font-size: 3em;
+        letter-spacing: 4px;
+    }
+
+    .entrance-screen .room-code {
+        font-size: 2.2em;
+        letter-spacing: 5px;
+    }
+
+    .entrance-screen .room-code-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .entrance-screen .copy-btn {
+        width: 100%;
+        max-width: 200px;
+        height: 40px;
+        border-radius: 8px;
+    }
+
+    .entrance-screen .copy-btn::after {
+        content: " Copy Code";
+        font-size: 0.85em;
+        font-weight: 600;
+        margin-left: 8px;
+    }
+
+    .action-notification {
+        padding: 10px 12px;
+        font-size: 0.85em;
+    }
+
+    .my-area {
+        padding: 12px;
+    }
+
+    .my-info {
+        font-size: 1em;
+    }
+
+    .logs {
+        height: 90px;
+    }
+
+    .cheatsheet-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1em;
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .cheatsheet-modal {
+        padding: 10px;
+    }
+
+    .cheatsheet-modal .cheatsheet-content img {
+        max-height: calc(100vh - 80px);
+    }
+
+    .cheatsheet-modal .close-btn {
+        margin-top: 10px;
+        padding: 10px 25px;
+        font-size: 0.85em;
+    }
+}

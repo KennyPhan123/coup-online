@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coup</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;900&family=Playfair+Display:wght@700;900&display=swap"
+        rel="stylesheet" />
+    <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+    <!-- 1. HOME SCREEN -->
+    <div id="home-screen" class="screen entrance-screen active">
+        <h1>COUP</h1>
+        <div class="subtitle">Bluff. Deceive. Survive.</div>
+        <div class="entrance-container">
+            <button class="btn btn-primary w-100" onclick="show('create-screen')">
+                Create Game
+            </button>
+            <button class="btn w-100" onclick="show('join-screen')">
+                Join Game
+            </button>
+        </div>
+    </div>
+
+    <!-- 2. CREATE SCREEN -->
+    <div id="create-screen" class="screen entrance-screen">
+        <h1>COUP</h1>
+        <div class="subtitle">Create a Room</div>
+        <input id="create-name" placeholder="Enter your name" />
+        <div class="entrance-container">
+            <button class="btn btn-primary w-100" onclick="createGame()">
+                Create Room
+            </button>
+            <button class="btn btn-back w-100" onclick="show('home-screen')">
+                Back
+            </button>
+        </div>
+    </div>
+
+    <!-- 3. JOIN SCREEN -->
+    <div id="join-screen" class="screen entrance-screen">
+        <h1>COUP</h1>
+        <div class="subtitle">Join a Room</div>
+        <input id="join-name" placeholder="Enter your name" />
+        <input id="join-code" placeholder="Room Code" style="text-transform: uppercase" />
+        <div class="entrance-container">
+            <button class="btn btn-primary w-100" onclick="joinGame()">
+                Join Room
+            </button>
+            <button class="btn btn-back w-100" onclick="show('home-screen')">
+                Back
+            </button>
+        </div>
+    </div>
+
+    <!-- 4. LOBBY SCREEN -->
+    <div id="lobby-screen" class="screen entrance-screen">
+        <h1>COUP</h1>
+        <div class="subtitle">Room Code</div>
+        <div class="room-code-container">
+            <div id="lobby-code" class="room-code"></div>
+            <button class="copy-btn" onclick="copyRoomCode()" title="Copy Room Code">
+                📋
+            </button>
+        </div>
+        <div id="lobby-list" class="lobby-player-list"></div>
+        <button id="start-btn" class="btn btn-primary w-100" onclick="socket.emit('start', currentCode)"
+            style="display: none; max-width: 320px">
+            Start Game
+        </button>
+    </div>
+
+    <!-- 5. GAME SCREEN -->
+    <div id="game-screen" class="screen">
+        <div class="game-container">
+            <div id="action-notification" class="action-notification">
+                <div class="action-text"></div>
+            </div>
+
+            <div id="players" class="player-list"></div>
+
+            <div id="logs" class="logs"></div>
+
+            <div class="my-area">
+                <div class="my-info">
+                    <span id="my-name"></span>
+                    <span class="coins">Coins: <span id="my-coins"></span></span>
+                </div>
+                <div id="my-hand" style="
+                            display: flex;
+                            justify-content: center;
+                            margin-bottom: 15px;
+                            gap: 8px;
+                        "></div>
+                <div id="controls" class="controls"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODALS -->
+    <div id="target-modal" class="modal">
+        <h3>Select Target</h3>
+        <div id="target-btns" style="
+                    display: grid;
+                    grid-template-columns: 1fr 1fr;
+                    gap: 10px;
+                    width: 100%;
+                    max-width: 400px;
+                "></div>
+        <button class="btn btn-neutral w-100" onclick="closeModal('target-modal')"
+            style="margin-top: 20px; max-width: 200px">
+            Cancel
+        </button>
+    </div>
+
+    <div id="exchange-modal" class="modal">
+        <h3 id="exchange-title">Keep Cards</h3>
+        <div id="exchange-cards" style="
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 10px;
+                    margin: 20px 0;
+                    justify-content: center;
+                "></div>
+        <button class="btn btn-neutral w-100" onclick="submitExchange()" style="max-width: 200px">
+            Confirm
+        </button>
+    </div>
+
+    <!-- CHEATSHEET -->
+    <button class="cheatsheet-btn" onclick="openCheatsheet()" title="Cheatsheet">
+        ?
+    </button>
+
+    <div id="cheatsheet-modal" class="cheatsheet-modal">
+        <div class="cheatsheet-content">
+            <img src="/images/cheatsheet.svg" alt="Coup Cheatsheet" />
+        </div>
+        <button class="close-btn" onclick="closeCheatsheet()">Close</button>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+
+</html>
