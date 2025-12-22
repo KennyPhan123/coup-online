@@ -1,5 +1,5 @@
-const { ACTIONS } = require("./constants");
-const { shuffle, createDeck } = require("./utils");
+import { ACTIONS } from "./constants.js";
+import { shuffle, createDeck } from "./utils.js";
 
 class Game {
     constructor(code, hostId, hostName) {
@@ -413,4 +413,4 @@ class Game {
     }
 }
 
-module.exports = Game;
+export default Game;

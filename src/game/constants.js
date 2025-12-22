@@ -34,4 +34,5 @@ const ACTIONS = {
     },
 };
 
-module.exports = { ROLES, ACTIONS };
+export { ROLES, ACTIONS };
+

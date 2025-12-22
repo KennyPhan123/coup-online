@@ -1,4 +1,4 @@
-const socket = io();
+let socket = null;
 let currentCode = null;
 let myId = null;
 let gameState = null;
@@ -12,6 +12,65 @@ const roleImages = {
     Ambassador: "/images/ambassador.png",
     Contessa: "/images/contessa.png",
 };
+
+// Initialize WebSocket connection
+function initSocket() {
+    const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
+    const host = window.location.host;
+    const wsUrl = `${protocol}//${host}/parties/main/main`;
+
+    socket = new WebSocket(wsUrl);
+
+    socket.addEventListener("message", (event) => {
+        const data = JSON.parse(event.data);
+        handleServerMessage(data);
+    });
+
+    socket.addEventListener("open", () => {
+        console.log("Connected to PartyKit server");
+    });
+
+    socket.addEventListener("close", () => {
+        console.log("Disconnected from server");
+    });
+
+    socket.addEventListener("error", (e) => {
+        console.error("WebSocket error:", e);
+    });
+}
+
+function handleServerMessage(data) {
+    switch (data.type) {
+        case "connected":
+            myId = data.id;
+            break;
+        case "joined":
+            currentCode = data.code;
+            myId = data.id;
+            show("lobby-screen");
+            document.getElementById("lobby-code").innerText = data.code;
+            break;
+        case "update":
+            gameState = data;
+            render(data);
+            break;
+        case "error":
+            alert(data.message);
+            break;
+    }
+}
+
+// Helper function to send messages to server
+function emit(type, payload = {}) {
+    console.log("emit called:", type, payload, "socket state:", socket?.readyState);
+    if (socket && socket.readyState === WebSocket.OPEN) {
+        const msg = JSON.stringify({ type, ...payload });
+        console.log("Sending:", msg);
+        socket.send(msg);
+    } else {
+        console.error("Socket not ready! State:", socket?.readyState);
+    }
+}
 
 function show(id) {
     document
@@ -72,23 +131,9 @@ document
         }
     });
 
-socket.on("joined", ({ code, id }) => {
-    currentCode = code;
-    myId = id;
-    show("lobby-screen");
-    document.getElementById("lobby-code").innerText = code;
-});
-
-socket.on("update", (room) => {
-    gameState = room;
-    render(room);
-});
-
-socket.on("error", (msg) => alert(msg));
-
 function createGame() {
     const name = document.getElementById("create-name").value;
-    if (name) socket.emit("createRoom", name);
+    if (name) emit("createRoom", { name });
 }
 
 function joinGame() {
@@ -96,7 +141,7 @@ function joinGame() {
     const code = document
         .getElementById("join-code")
         .value.toUpperCase();
-    if (name && code) socket.emit("joinRoom", { code, name });
+    if (name && code) emit("joinRoom", { code, name });
 }
 
 function createCardElement(
@@ -358,7 +403,7 @@ function render(room) {
                     room.pendingLoss[0]?.playerId === myId));
 
         const cardEl = createCardElement(c, isSelectable, () => {
-            socket.emit("chooseCard", {
+            emit("chooseCard", {
                 code: currentCode,
                 index: idx,
             });
@@ -394,7 +439,7 @@ function renderControls(room, me) {
             btn.className = "btn btn-neutral w-100";
             btn.innerText = "Play Again";
             btn.onclick = () =>
-                socket.emit("playAgain", currentCode);
+                emit("playAgain", { code: currentCode });
             cDiv.appendChild(btn);
         } else {
             cDiv.innerHTML =
@@ -455,9 +500,9 @@ function renderControls(room, me) {
             btn.onclick = () => {
                 if (a.target) showTarget(a.id);
                 else
-                    socket.emit("action", {
+                    emit("action", {
                         code: currentCode,
-                        type: a.id,
+                        actionType: a.id,
                     });
             };
             cDiv.appendChild(btn);
@@ -487,7 +532,7 @@ function renderControls(room, me) {
             btnPass.className = "btn btn-neutral";
             btnPass.innerText = isActor ? "Accept Block" : "Pass";
             btnPass.onclick = () =>
-                socket.emit("response", {
+                emit("response", {
                     code: currentCode,
                     response: "PASS",
                 });
@@ -497,7 +542,7 @@ function renderControls(room, me) {
             btnChal.className = "btn btn-neutral";
             btnChal.innerText = "Challenge";
             btnChal.onclick = () =>
-                socket.emit("response", {
+                emit("response", {
                     code: currentCode,
                     response: "CHALLENGE",
                 });
@@ -513,7 +558,7 @@ function renderControls(room, me) {
             btnPass.className = "btn btn-neutral";
             btnPass.innerText = "Pass";
             btnPass.onclick = () =>
-                socket.emit("response", {
+                emit("response", {
                     code: currentCode,
                     response: "PASS",
                 });
@@ -531,7 +576,7 @@ function renderControls(room, me) {
                 btnChal.className = "btn btn-neutral";
                 btnChal.innerText = "Challenge";
                 btnChal.onclick = () =>
-                    socket.emit("response", {
+                    emit("response", {
                         code: currentCode,
                         response: "CHALLENGE",
                     });
@@ -563,7 +608,7 @@ function renderControls(room, me) {
                 btn.className = `btn ${cls}`;
                 btn.innerText = `Block (${r})`;
                 btn.onclick = () =>
-                    socket.emit("response", {
+                    emit("response", {
                         code: currentCode,
                         response: "BLOCK",
                         extra: r,
@@ -584,9 +629,9 @@ function showTarget(type) {
             btn.className = "btn btn-neutral w-100";
             btn.innerText = p.name;
             btn.onclick = () => {
-                socket.emit("action", {
+                emit("action", {
                     code: currentCode,
-                    type: selectedAction,
+                    actionType: selectedAction,
                     targetId: p.id,
                 });
                 closeModal("target-modal");
@@ -638,5 +683,21 @@ function submitExchange() {
         .hand.filter((c) => !c.revealed).length;
     if (selected.length !== handSize)
         return alert(`Select exactly ${handSize} cards!`);
-    socket.emit("exchange", { code: currentCode, roles: selected });
+    emit("exchange", { code: currentCode, roles: selected });
 }
+
+// Start button handler - need to update for PartySocket
+function startGame() {
+    emit("start", { code: currentCode });
+}
+
+// Initialize socket on page load
+window.addEventListener("DOMContentLoaded", () => {
+    initSocket();
+
+    // Update start button to use new function
+    const startBtn = document.getElementById("start-btn");
+    if (startBtn) {
+        startBtn.onclick = startGame;
+    }
+});

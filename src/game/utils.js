@@ -1,4 +1,4 @@
-const { ROLES } = require("./constants");
+import { ROLES } from "./constants.js";
 
 /**
  * Generate a random 4-character room code
@@ -29,4 +29,5 @@ function createDeck() {
     return shuffle(deck);
 }
 
-module.exports = { generateCode, shuffle, createDeck };
+export { generateCode, shuffle, createDeck };
+

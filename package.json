@@ -1,14 +1,14 @@
 {
   "name": "coup-game",
   "version": "1.0.0",
-  "description": "",
-  "main": "src/server.js",
+  "description": "Coup - A multiplayer bluffing card game",
+  "type": "module",
   "scripts": {
-    "start": "node src/server.js"
+    "dev": "npx partykit dev",
+    "deploy": "npx partykit deploy"
   },
   "dependencies": {
-    "express": "^4.18.2",
-    "socket.io": "^4.7.2",
-    "uuid": "^13.0.0"
+    "partykit": "^0.0.115",
+    "partysocket": "^1.0.2"
   }
 }
