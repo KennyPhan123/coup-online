@@ -2,11 +2,10 @@
 
 A multiplayer bluffing card game based on the popular board game Coup. Play with 2-6 players online in real-time.
 
-## Play Now
+## Play Online
+**Live Game:** https://coup.kennyphan123.partykit.dev
 
-**Live Game:** https://coup-game-server.kennyphan123.partykit.dev
-
-## Game Rules
+## SetupGame Rules
 
 In Coup, you start with 2 influence cards (hidden from other players) and 2 coins. Your goal is to be the last player standing.
 

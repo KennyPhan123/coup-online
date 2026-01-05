@@ -1,5 +1,5 @@
 {
-  "name": "coup-game-server",
+  "name": "coup",
   "main": "party/server.js",
   "compatibilityDate": "2025-12-22",
   "serve": "./public"
