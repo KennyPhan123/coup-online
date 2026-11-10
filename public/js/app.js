@@ -13,30 +13,26 @@ const roleImages = {
     Contessa: "/images/contessa.png",
 };
 
-// Initialize WebSocket connection
-function initSocket() {
+// Each room has its own Durable Object and WebSocket connection.
+function connectToRoom(code, type, name) {
+    if (socket) socket.close();
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    const host = window.location.host;
-    const wsUrl = `${protocol}//${host}/parties/main/main`;
-
-    socket = new WebSocket(wsUrl);
-
-    socket.addEventListener("message", (event) => {
-        const data = JSON.parse(event.data);
-        handleServerMessage(data);
+    const connection = new WebSocket(`${protocol}//${window.location.host}/ws/${code}`);
+    socket = connection;
+    connection.addEventListener("open", () => {
+        connection.send(JSON.stringify({ type, name }));
     });
-
-    socket.addEventListener("open", () => {
-        console.log("Connected to PartyKit server");
+    connection.addEventListener("message", (event) => {
+        if (connection === socket) handleServerMessage(JSON.parse(event.data));
     });
-
-    socket.addEventListener("close", () => {
-        console.log("Disconnected from server");
+    connection.addEventListener("close", () => {
+        if (connection === socket && currentCode) {
+            currentCode = null;
+            alert("Disconnected from the game. Please create or join a room again.");
+            window.location.reload();
+        }
     });
-
-    socket.addEventListener("error", (e) => {
-        console.error("WebSocket error:", e);
-    });
+    connection.addEventListener("error", () => console.error("WebSocket error"));
 }
 
 function handleServerMessage(data) {
@@ -133,7 +129,12 @@ document
 
 function createGame() {
     const name = document.getElementById("create-name").value;
-    if (name) emit("createRoom", { name });
+    if (name) {
+        const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+        const bytes = crypto.getRandomValues(new Uint8Array(4));
+        const code = Array.from(bytes, b => alphabet[b % alphabet.length]).join("");
+        connectToRoom(code, "createRoom", name);
+    }
 }
 
 function joinGame() {
@@ -141,7 +142,8 @@ function joinGame() {
     const code = document
         .getElementById("join-code")
         .value.toUpperCase();
-    if (name && code) emit("joinRoom", { code, name });
+    if (name && /^[A-Z0-9]{4}$/.test(code)) connectToRoom(code, "joinRoom", name);
+    else if (name && code) alert("Room code must be 4 letters or numbers.");
 }
 
 function createCardElement(
@@ -686,14 +688,13 @@ function submitExchange() {
     emit("exchange", { code: currentCode, roles: selected });
 }
 
-// Start button handler - need to update for PartySocket
+// Start button handler
 function startGame() {
     emit("start", { code: currentCode });
 }
 
 // Initialize socket on page load
 window.addEventListener("DOMContentLoaded", () => {
-    initSocket();
 
     // Update start button to use new function
     const startBtn = document.getElementById("start-btn");

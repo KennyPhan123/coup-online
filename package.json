@@ -4,11 +4,11 @@
   "description": "Coup - A multiplayer bluffing card game",
   "type": "module",
   "scripts": {
-    "dev": "npx partykit dev",
-    "deploy": "npx partykit deploy"
+    "dev": "wrangler dev --ip 0.0.0.0",
+    "deploy": "wrangler deploy",
+    "test": "node --test"
   },
-  "dependencies": {
-    "partykit": "^0.0.115",
-    "partysocket": "^1.0.2"
+  "devDependencies": {
+    "wrangler": "^4.0.0"
   }
 }
