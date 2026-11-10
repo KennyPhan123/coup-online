@@ -2,10 +2,7 @@
 
 A multiplayer bluffing card game based on the popular board game Coup. Play with 2-6 players online in real-time.
 
-## Play Online
-**Live Game:** https://coup.kennyphan123.partykit.dev
-
-## SetupGame Rules
+## Game Rules
 
 In Coup, you start with 2 influence cards (hidden from other players) and 2 coins. Your goal is to be the last player standing.
 
@@ -27,7 +24,7 @@ You can claim any action, even if you don't have the required card. Other player
 
 ## Tech Stack
 
-- **Server:** PartyKit (Cloudflare Workers)
+- **Server:** Cloudflare Workers and Durable Objects
 - **Client:** Vanilla JavaScript
 - **Styling:** Vanilla CSS
 - **Real-time:** WebSocket
@@ -36,7 +33,7 @@ You can claim any action, even if you don't have the required card. Other player
 
 ### Prerequisites
 
-- Node.js 17+
+- Node.js 20+
 - npm
 
 ### Run Locally
@@ -46,23 +43,28 @@ You can claim any action, even if you don't have the required card. Other player
 npm install
 
 # Start development server
-npx partykit dev
+npm run dev
 ```
 
-Open http://127.0.0.1:1999 in your browser.
+Open http://localhost:8787 in your browser.
 
 ### Deploy
 
+Create a Cloudflare account with Workers and Durable Objects enabled, then log in and deploy:
+
 ```bash
-npx partykit deploy
+npx wrangler login
+npm run deploy
 ```
+
+Wrangler prints the deployed Workers URL. The Worker serves both the static site and the WebSocket endpoint on the same origin. Each room runs in a separate Durable Object; game state is stored durably while players are connected. Disconnecting still eliminates a player, and rooms are deleted when everyone leaves. Existing PartyKit rooms cannot be migrated.
 
 ## Project Structure
 
 ```
 coup-game/
-├── party/
-│   └── server.js       # PartyKit WebSocket server
+├── worker/
+│   └── index.js        # Worker and Durable Object WebSocket server
 ├── public/
 │   ├── css/
 │   │   └── styles.css  # Game styling
@@ -75,7 +77,7 @@ coup-game/
 │       ├── Game.js     # Game logic
 │       ├── constants.js
 │       └── utils.js
-├── partykit.json       # PartyKit config
+├── wrangler.jsonc      # Cloudflare Worker config
 └── package.json
 ```
 

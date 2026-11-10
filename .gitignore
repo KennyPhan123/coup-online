@@ -134,3 +134,5 @@ dist
 
 # PartyKit cache
 .partykit/
+# Cloudflare local state
+.wrangler/
